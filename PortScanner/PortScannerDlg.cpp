@@ -513,7 +513,7 @@ void CPortScannerDlg::OnBnClickedButtonDo()
 					CString szIP;
 
 					szIP.Format("%d.%d.%d.%d", f0, f1, f2, f3);
-					//szIP = "10.21.32.111";
+					//szIP = ¶Ïµç"10.21.32.111";
 					for (int j = 0; j < 64; j++) {
 						for (int p = 0; p < 1024; p++) {
 
