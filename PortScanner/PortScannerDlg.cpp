@@ -69,6 +69,7 @@ BEGIN_MESSAGE_MAP(CPortScannerDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON2, &CPortScannerDlg::OnBnClickedButton2)
 	ON_EN_CHANGE(IDC_EDIT1, &CPortScannerDlg::OnEnChangeEdit1)
 	ON_BN_CLICKED(IDC_BUTTON3, &CPortScannerDlg::OnBnClickedButton3)
+	ON_CBN_SELCHANGE(IDC_COMBO_THREAD, &CPortScannerDlg::OnCbnSelchangeComboThread)
 END_MESSAGE_MAP()
 
 
@@ -120,6 +121,15 @@ BOOL CPortScannerDlg::OnInitDialog()
 	pComb->AddString("1400");
 	pComb->AddString("5000");
 	pComb->SetCurSel(3);
+	CComboBox* pCombThread = (CComboBox*)GetDlgItem(IDC_COMBO_THREAD);
+	pCombThread->AddString("32");
+	pCombThread->AddString("64");
+	pCombThread->AddString("128");
+	pCombThread->AddString("256");
+	pCombThread->AddString("512");
+	pCombThread->AddString("1024");
+	pCombThread->AddString("2048");
+	pCombThread->SetCurSel(3);
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
 
@@ -688,7 +698,10 @@ void CPortScannerDlg::OnBnClickedButton3()
 	CComboBox* pComb = (CComboBox*)GetDlgItem(IDC_COMBO1);
 	pComb->GetWindowTextA(str);
 	int usetime = _ttoi(str);
-
+	CComboBox* pCombThread = (CComboBox*)GetDlgItem(IDC_COMBO_THREAD);
+	pComb->GetWindowTextA(str);
+	int col = _ttoi(str);
+	
 	const int size = 9999;
 	const UINT one = 256;
 	DWORD exitCode[size];
@@ -709,7 +722,7 @@ void CPortScannerDlg::OnBnClickedButton3()
 
 					szIP.Format("%d.%d.%d.%d", f0, f1, f2, f3);
 					//szIP = "10.21.32.111";
-					int col=256;
+				
 					for (int j = 0; j < 64*4; j++) {
 						for (int p = 0; p < col; p++) {
 
@@ -763,4 +776,10 @@ void CPortScannerDlg::OnBnClickedButton3()
 
 
 	AfxMessageBox("执行结束");
+}
+
+
+void CPortScannerDlg::OnCbnSelchangeComboThread()
+{
+	// TODO: 在此添加控件通知处理程序代码
 }
