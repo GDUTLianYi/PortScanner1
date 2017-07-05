@@ -68,6 +68,7 @@ BEGIN_MESSAGE_MAP(CPortScannerDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON1, &CPortScannerDlg::OnBnClickedButton1)
 	ON_BN_CLICKED(IDC_BUTTON2, &CPortScannerDlg::OnBnClickedButton2)
 	ON_EN_CHANGE(IDC_EDIT1, &CPortScannerDlg::OnEnChangeEdit1)
+	ON_BN_CLICKED(IDC_BUTTON3, &CPortScannerDlg::OnBnClickedButton3)
 END_MESSAGE_MAP()
 
 
@@ -257,7 +258,7 @@ DWORD WINAPI ThreadFunc(LPVOID pParam) {
 		((mypack*)pParam)->port = 0;
 	}
 	else {
-
+		
 	}
 	::closesocket(cClient);
 
@@ -340,7 +341,7 @@ void CPortScannerDlg::OnBnClickedButton2()
 					}
 
 					if (flag == 0) {
-						Sleep(4000);
+						Sleep(1000);
 					}
 					else {
 						break;
@@ -436,7 +437,7 @@ void CPortScannerDlg::OnBnClickedButton1()
 						}
 
 						if (flag == 0) {
-							Sleep(4000);
+							Sleep(1000);
 						}
 						else {
 							break;
@@ -537,7 +538,7 @@ void CPortScannerDlg::OnBnClickedButtonDo()
 							}
 
 							if (flag == 0) {
-								Sleep(4000);
+								Sleep(1000);
 							}
 							else {
 								break;
@@ -659,3 +660,107 @@ else {
 }
 AfxMessageBox("ok");
 */
+
+void CPortScannerDlg::OnBnClickedButton3()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	CListCtrl *pList = (CListCtrl*)GetDlgItem(IDC_LIST_PORT);
+	int nCount = pList->GetItemCount();
+	// Delete all of the items from the list view control.
+	for (int i = 0; i < nCount; i++)
+	{
+		pList->DeleteItem(0);
+	}
+	CIPAddressCtrl *pIP = (CIPAddressCtrl*)GetDlgItem(IDC_IPADDRESS);
+	CIPAddressCtrl *pIP1 = (CIPAddressCtrl*)GetDlgItem(IDC_IPADDRESS1);
+	BYTE f[4] = { 10,21,32,111 }, g[4] = { 10,21,32,111 };
+	pIP->GetAddress(f[0], f[1], f[2], f[3]);
+	pIP1->GetAddress(g[0], g[1], g[2], g[3]);
+
+	int range = 1;
+	for (int r = 0; r < 4; r++)
+		range *= (g[r] - f[r] + 1);
+
+	CProgressCtrl *cpc = (CProgressCtrl*)GetDlgItem(IDC_PROGRESS1);
+	cpc->SetRange(0, range * 64*4);
+	cpc->SetPos(0);
+	CString str;
+	CComboBox* pComb = (CComboBox*)GetDlgItem(IDC_COMBO1);
+	pComb->GetWindowTextA(str);
+	int usetime = _ttoi(str);
+
+	const int size = 9999;
+	const UINT one = 256;
+	DWORD exitCode[size];
+	DWORD threadId[size];
+	HANDLE hThrds[size];
+	UINT port[size];
+	mypack pack[size];
+	CString res;
+
+	int cnt = 0;
+	for (int f0 = f[0]; f0 <= g[0]; f0++) {
+		for (int f1 = f[1]; f1 <= g[1]; f1++) {
+			for (int f2 = f[2]; f2 <= g[2]; f2++) {
+
+				for (int f3 = f[3]; f3 <= g[3]; f3++) {
+
+					CString szIP;
+
+					szIP.Format("%d.%d.%d.%d", f0, f1, f2, f3);
+					//szIP = "10.21.32.111";
+					int col=256;
+					for (int j = 0; j < 64*4; j++) {
+						for (int p = 0; p < col; p++) {
+
+							pack[p].port = p +col * j;
+							pack[p].time = usetime;
+							pack[p].IP = szIP;
+
+							hThrds[p] = CreateThread(NULL, 0, ThreadFunc, &pack[p], 0, &threadId[p]);
+						}
+						for (;;)
+						{
+							int flag = 1;
+
+							printf("Press any key to exit..\n");
+							//getch();
+							for (int p = 0; p < col; p++) {
+								GetExitCodeThread(hThrds[p], &exitCode[p]);
+								if (exitCode[p] == STILL_ACTIVE) {
+									flag = 0;
+									break;
+								}
+							}
+
+							if (flag == 0) {
+								Sleep(1000);
+							}
+							else {
+								break;
+							}
+						}
+						for (int p = 0; p < col; p++) {
+
+							if (pack[p].port != 0) {
+								//CString  tmp;
+								//tmp.Format(" %d", pack[p].port);
+								//res.Append(tmp);
+								int ncount = pList->GetItemCount();
+								pList->InsertItem(ncount, pack[p].IP);
+								CString sport; sport.Format("%d", pack[p].port);
+								pList->SetItemText(ncount, 1, sport);
+							}
+						}
+						cpc->SetPos(++cnt);
+						UpdateWindow();
+					}
+
+				}
+			}
+		}
+	}
+
+
+	AfxMessageBox("执行结束");
+}
