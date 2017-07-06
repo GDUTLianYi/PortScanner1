@@ -9,6 +9,7 @@
 #endif
 
 #include "resource.h"		// Ö÷·ûºÅ
+#include "PortScanner_i.h"
 
 
 // CPortScannerApp: 
@@ -28,6 +29,7 @@ public:
 // ÊµÏÖ
 
 	DECLARE_MESSAGE_MAP()
+	BOOL ExitInstance();
 };
 
 extern CPortScannerApp theApp;

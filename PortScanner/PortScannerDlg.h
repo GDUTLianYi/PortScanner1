@@ -45,4 +45,6 @@ public:
 	afx_msg void OnEnChangeEdit1();
 	afx_msg void OnBnClickedButton3();
 	afx_msg void OnCbnSelchangeComboThread();
+	afx_msg void OnBnClickedButtonExcel();
+	afx_msg void OnBnClickedButton4();
 };

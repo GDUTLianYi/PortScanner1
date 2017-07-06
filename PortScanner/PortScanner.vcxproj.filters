@@ -54,10 +54,21 @@
     <None Include="res\PortScanner.rc2">
       <Filter>资源文件</Filter>
     </None>
+    <None Include="PortScanner.rgs">
+      <Filter>资源文件</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\PortScanner.ico">
       <Filter>资源文件</Filter>
     </Image>
+    <Image Include="res\icon1.ico">
+      <Filter>资源文件</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Midl Include="PortScanner.idl">
+      <Filter>源文件</Filter>
+    </Midl>
   </ItemGroup>
 </Project>

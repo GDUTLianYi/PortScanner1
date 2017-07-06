@@ -7,7 +7,10 @@
 #define IDS_ABOUTBOX                    101
 #define IDD_PORTSCANNER_DIALOG          102
 #define IDP_SOCKETS_INIT_FAILED         103
-#define IDR_MAINFRAME                   128
+#define IDR_PORTSCANNER                 104
+#define IDI_ICON1                       128
+#define IDR_MAINFRAME                   138
+
 #define IDC_IPADDRESS                   1000
 #define IDC_BUTTON_DO                   1001
 #define IDC_LIST_PORT                   1002
@@ -21,14 +24,16 @@
 #define IDC_COMBO1                      1012
 #define IDC_BUTTON3                     1013
 #define IDC_COMBO_THREAD                1014
+#define IDC_BUTTON_EXCEL                1015
+#define IDC_BUTTON4                     1016
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        130
+#define _APS_NEXT_RESOURCE_VALUE        131
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1015
-#define _APS_NEXT_SYMED_VALUE           101
+#define _APS_NEXT_CONTROL_VALUE         1017
+#define _APS_NEXT_SYMED_VALUE           105
 #endif
 #endif

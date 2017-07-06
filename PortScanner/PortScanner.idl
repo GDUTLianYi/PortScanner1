@@ -1,0 +1,17 @@
+// PortScanner.idl : PortScanner 的 IDL 源
+//
+
+// 此文件将由 MIDL 工具处理以
+// 产生类型库(PortScanner.tlb)和封送处理代码。
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+[
+	uuid(7A017428-7407-4011-8451-86AE81B55B31),
+	version(1.0)	
+]
+library PortScannerLib
+{
+	importlib("stdole2.tlb");
+};

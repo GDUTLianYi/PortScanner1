@@ -52,7 +52,8 @@ END_MESSAGE_MAP()
 CPortScannerDlg::CPortScannerDlg(CWnd* pParent /*=NULL*/)
 	: CDialogEx(IDD_PORTSCANNER_DIALOG, pParent)
 {
-	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
+	//m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
+	m_hIcon = AfxGetApp()->LoadIcon(IDI_ICON1);
 }
 
 void CPortScannerDlg::DoDataExchange(CDataExchange* pDX)
@@ -70,6 +71,8 @@ BEGIN_MESSAGE_MAP(CPortScannerDlg, CDialogEx)
 	ON_EN_CHANGE(IDC_EDIT1, &CPortScannerDlg::OnEnChangeEdit1)
 	ON_BN_CLICKED(IDC_BUTTON3, &CPortScannerDlg::OnBnClickedButton3)
 	ON_CBN_SELCHANGE(IDC_COMBO_THREAD, &CPortScannerDlg::OnCbnSelchangeComboThread)
+	ON_BN_CLICKED(IDC_BUTTON_EXCEL, &CPortScannerDlg::OnBnClickedButtonExcel)
+	ON_BN_CLICKED(IDC_BUTTON4, &CPortScannerDlg::OnBnClickedButton4)
 END_MESSAGE_MAP()
 
 
@@ -782,4 +785,49 @@ void CPortScannerDlg::OnBnClickedButton3()
 void CPortScannerDlg::OnCbnSelchangeComboThread()
 {
 	// TODO: 在此添加控件通知处理程序代码
+}
+
+
+void CPortScannerDlg::OnBnClickedButtonExcel()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	CFileDialog fdlg(false,"xls",NULL);
+	INT_PTR rt = fdlg.DoModal();
+	CListCtrl *plist = (CListCtrl*)GetDlgItem(IDC_LIST_PORT);
+	if (IDOK == rt) {
+		CString path = fdlg.GetPathName();
+		CString name = fdlg.GetFileName();
+		//AfxMessageBox("你点了保存");
+		int ncount = plist->GetItemCount();
+		CString str;
+		for (int i = 0; i < ncount; i++) {
+			CString tmp = plist->GetItemText(i, 0);
+			str.Append(" " + tmp);
+			tmp = plist->GetItemText(i,1);
+			str.Append(" " + tmp);
+		}
+		CFile f; CFileException e;
+
+		if (!f.Open(path, CFile::modeCreate | CFile::modeWrite, &e)) {
+			AfxMessageBox("file could not be opened %d", e.m_cause);
+			
+		}
+		else {
+			char s[4096]="1233456789";
+			//memcpy(s, str, str.GetLength());
+			f.Write(s, sizeof s);
+			f.Flush();
+			f.Close();
+		}
+		//AfxMessageBox(str);
+	}
+	else if (IDCANCEL == rt) {
+		AfxMessageBox("你点了取消");
+	}
+}
+
+
+void CPortScannerDlg::OnBnClickedButton4()
+{
+	
 }
